@@ -1,0 +1,27 @@
+{
+  "app": {
+    "nombre": "Planificador de Formaciones",
+    "version": "0.1.0",
+    "idioma": "es-ES"
+  },
+  "base_datos": {
+    "archivo": "planificador.db",
+    "backup_dir": "backups"
+  },
+  "calendario": {
+    "zona_horaria": "Europe/Madrid",
+    "margen_desplazamiento_min": 60
+  },
+  "ui": {
+    "tema": "claro",
+    "fuente": "Arial",
+    "tamaño_fuente": 10
+  },
+  "notificaciones": {
+    "email": false,
+    "servidor_smtp": "",
+    "puerto": 587,
+    "usuario": "",
+    "password": ""
+  }
+}
