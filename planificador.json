@@ -8,9 +8,7 @@
     "Gestionar eventos recurrentes",
     "Exportar planning a PDF",
     "Sincronizar con Google Calendar",
-    "Cálculo de horas impartidas para estadísticas y facturación futura",
-    "Registrar y seguir interacciones comerciales con clientes (mini-CRM)",
-    "Crear recordatorios y próximas acciones desde interacciones"
+    "Cálculo de horas impartidas para estadísticas y facturación futura"
   ],
   "modelo_datos": {
     "Cliente": [
@@ -78,33 +76,20 @@
       "ruta_fichero",
       "notas",
       "created_at"
-    ],
-    "InteraccionCliente": [
-      "id_interaccion",
-      "id_cliente",
-      "id_contratacion (opcional)",
-      "fecha",
-      "tipo (llamada|email|reunion|mensaje|otro)",
-      "descripcion",
-      "resultado (pendiente|negociacion|aceptado|rechazado|sin_respuesta)",
-      "proxima_accion",
-      "fecha_proxima_accion",
-      "crear_recordatorio (bool)",
-      "created_at"
     ]
   },
   "arquitectura": {
     "capa_datos": "SQLite + repositorios",
     "capa_dominio": "Clases OOP con lógica de negocio",
-    "capa_servicios": "Exportaciones, sincronización, backups, seguimiento comercial (interacciones, próximas acciones)",
-    "capa_ui": "PyQt con vistas de calendario, formularios, drag&drop, pestaña de Interacciones en la ficha de Cliente"
+    "capa_servicios": "Exportaciones, sincronización, backups",
+    "capa_ui": "PyQt con vistas de calendario, formularios, drag&drop"
   },
   "roadmap": {
     "fase1": ["estructura proyecto", "entorno", "configuración", "git"],
-    "fase2": ["script SQL", "db_manager", "repositorios CRUD (incluyendo InteraccionCliente)", "consultas clave"],
-    "fase3": ["clases dominio (Cliente, FormacionBase, Contratacion, Sesion, Adjunto, InteraccionCliente)", "lógica negocio", "logging"],
+    "fase2": ["script SQL", "db_manager", "repositorios CRUD", "consultas clave"],
+    "fase3": ["clases dominio", "lógica negocio", "logging"],
     "fase4": ["servicios exportación", "csv", "ical", "google calendar", "backups"],
-    "fase5": ["UI principal", "vistas calendario", "formularios", "drag&drop", "búsqueda", "pestaña Interacciones en Cliente"],
+    "fase5": ["UI principal", "vistas calendario", "formularios", "drag&drop", "búsqueda"],
     "fase6": ["adjuntos", "mejoras UI", "exportar PDF", "config avanzada"],
     "fase7": ["tests unitarios", "tests funcionales", "docstring", "ejecutable", "publicar github"]
   },
@@ -114,3 +99,4 @@
     "Post 3: Inicio de la implementación (este post)"
   ]
 }
+
