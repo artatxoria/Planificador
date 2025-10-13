@@ -10,8 +10,7 @@
     "Sincronizar con Google Calendar",
     "Cálculo de horas impartidas para estadísticas y facturación futura",
     "Registrar y seguir interacciones comerciales con clientes (mini-CRM)",
-    "Crear recordatorios y próximas acciones desde interacciones",
-    "Realizar copias de seguridad automáticas de la base de datos"
+    "Crear recordatorios y próximas acciones desde interacciones"
   ],
   "modelo_datos": {
     "Cliente": [
@@ -96,42 +95,32 @@
   },
   "arquitectura": {
     "capa_datos": "SQLite + repositorios",
-    "capa_dominio": "Clases OOP con lógica de negocio y logging estructurado",
-    "capa_servicios": "Exportaciones (CSV, iCal, PDF), sincronización con Google Calendar (simulada), y sistema de backups locales automáticos",
-    "capa_ui": "PyQt con vistas de calendario, formularios, drag&drop, pestaña de Interacciones en la ficha de Cliente"
+    "capa_dominio": "Clases OOP con lógica de negocio y validaciones",
+    "capa_servicios": "Exportaciones, sincronización, backups, seguimiento comercial",
+    "capa_ui": "PyQt6 modular: ventanas, vistas y formularios con integración total con datos"
   },
   "roadmap": {
     "fase1": ["estructura proyecto", "entorno", "configuración", "git"],
     "fase2": ["script SQL", "db_manager", "repositorios CRUD", "consultas clave"],
     "fase3": ["clases dominio", "lógica negocio", "logging"],
-    "fase4": [
-      "servicio exportación (CSV, iCal, PDF)",
-      "servicio sincronización (Google Calendar simulado)",
-      "servicio backup (creación, restauración, rotación)",
-      "tests de servicios",
-      "verificación logging"
-    ],
+    "fase4": ["servicios exportación", "csv", "ical", "google calendar", "backups"],
     "fase5": ["UI principal", "vistas calendario", "formularios", "drag&drop", "búsqueda"],
-    "fase6": ["adjuntos", "mejoras UI", "exportar PDF visual", "config avanzada"],
-    "fase7": ["tests unitarios", "tests funcionales", "docstring", "ejecutable", "publicar github"],
-    "fase8": [
-      "modelo InteraccionCliente",
-      "repositorio y consultas (historial por cliente, pendientes)",
-      "UI: pestaña Interacciones en Cliente (alta/edición, filtros)",
-      "integración con calendario: crear recordatorios desde interacciones",
-      "exportación de interacciones (CSV/PDF)"
-    ]
-  },
-  "modulos": {
-    "servicios": [
-      "exportacion_servicio.py",
-      "sincronizacion_servicio.py",
-      "backup_servicio.py"
+    "fase6": ["adjuntos", "mejoras UI", "exportar PDF", "config avanzada"],
+    "fase7": [
+      "integración PyQt completa (Clientes, Calendario, Formaciones, Interacciones, Configuración)",
+      "vistas conectadas a la base de datos",
+      "mensajes y logs integrados",
+      "repositorios funcionales en tiempo real",
+      "estructura modular lista para añadir formularios y drag&drop"
     ],
-    "tests_servicios": [
-      "test_exportacion_csv.py",
-      "test_sincronizacion_servicio.py",
-      "test_backup_servicio.py"
+    "fase8": [
+      "formularios de alta/edición en vistas",
+      "drag&drop en calendario",
+      "vistas semanal y diaria",
+      "recordatorios automáticos",
+      "filtros avanzados y estados visuales",
+      "exportación de planning a PDF",
+      "publicación final del proyecto en GitHub"
     ]
   },
   "posts": [
@@ -139,7 +128,8 @@
     "Post 2: Diseño de la arquitectura y modelo de datos",
     "Post 3: Inicio de la implementación",
     "Post 4: Implementación de la capa de datos",
-    "Post 5: Capa de dominio y trazabilidad mediante logging",
-    "Post 6: Servicios de exportación, sincronización y backups"
+    "Post 5: Implementación de la capa de dominio",
+    "Post 6: Servicios: exportación, sincronización y backups",
+    "Post 7: Interfaz gráfica con PyQt6 (estructura y vistas funcionales)"
   ]
 }
