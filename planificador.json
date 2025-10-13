@@ -8,7 +8,9 @@
     "Gestionar eventos recurrentes",
     "Exportar planning a PDF",
     "Sincronizar con Google Calendar",
-    "Cálculo de horas impartidas para estadísticas y facturación futura"
+    "Cálculo de horas impartidas para estadísticas y facturación futura",
+    "Registrar y seguir interacciones comerciales con clientes (mini-CRM)",
+    "Crear recordatorios y próximas acciones desde interacciones"
   ],
   "modelo_datos": {
     "Cliente": [
@@ -76,27 +78,53 @@
       "ruta_fichero",
       "notas",
       "created_at"
+    ],
+    "InteraccionCliente": [
+      "id_interaccion",
+      "id_cliente",
+      "id_contratacion (opcional)",
+      "fecha",
+      "tipo (llamada|email|reunion|mensaje|otro)",
+      "descripcion",
+      "resultado (pendiente|negociacion|aceptado|rechazado|sin_respuesta)",
+      "proxima_accion",
+      "fecha_proxima_accion",
+      "crear_recordatorio (bool)",
+      "created_at"
     ]
   },
   "arquitectura": {
     "capa_datos": "SQLite + repositorios",
     "capa_dominio": "Clases OOP con lógica de negocio",
-    "capa_servicios": "Exportaciones, sincronización, backups",
-    "capa_ui": "PyQt con vistas de calendario, formularios, drag&drop"
+    "capa_servicios": "Exportaciones, sincronización, backups, seguimiento comercial (interacciones, próximas acciones)",
+    "capa_ui": "PyQt con vistas de calendario, formularios, drag&drop, pestaña de Interacciones en la ficha de Cliente"
   },
   "roadmap": {
     "fase1": ["estructura proyecto", "entorno", "configuración", "git"],
-    "fase2": ["script SQL", "db_manager", "repositorios CRUD", "consultas clave"],
-    "fase3": ["clases dominio", "lógica negocio", "logging"],
+    "fase2": ["script SQL", "db_manager", "repositorios CRUD (incluyendo InteraccionCliente)", "consultas clave", "pruebas unitarias", "prueba integración"],
+    "fase3": ["clases dominio (Cliente, FormacionBase, Contratacion, Sesion, Adjunto, InteraccionCliente)", "lógica negocio", "logging"],
     "fase4": ["servicios exportación", "csv", "ical", "google calendar", "backups"],
-    "fase5": ["UI principal", "vistas calendario", "formularios", "drag&drop", "búsqueda"],
+    "fase5": ["UI principal", "vistas calendario", "formularios", "drag&drop", "búsqueda", "pestaña Interacciones en Cliente"],
     "fase6": ["adjuntos", "mejoras UI", "exportar PDF", "config avanzada"],
     "fase7": ["tests unitarios", "tests funcionales", "docstring", "ejecutable", "publicar github"]
+  },
+  "fase1_detalle": {
+    "tarea1": "Creación de la estructura inicial del proyecto con carpetas y archivos base.",
+    "tarea2": "Creación del entorno virtual 'entorno_planificador' e instalación de dependencias mínimas (PyQt5, reportlab, icalendar, pytest).",
+    "tarea3": "Definición del archivo config.json con parámetros iniciales y creación del módulo planificador/common/config.py para su lectura.",
+    "tarea4": "Inicialización de repositorio Git local, configuración de .gitignore, primer commit y vinculación con repositorio remoto en GitHub (rama main, acceso SSH)."
+  },
+  "fase2_detalle": {
+    "tarea1": "Creación del esquema SQL completo en planificador/data/schema.sql con todas las tablas y relaciones.",
+    "tarea2": "Implementación de db_manager.py para gestionar conexiones y reinicializar la base de datos.",
+    "tarea3": "Implementación de repositorios CRUD definitivos para Cliente, Tema, FormacionBase, Contratacion, Sesion, Adjunto e InteraccionCliente.",
+    "tarea4": "Creación de pruebas unitarias con pytest para cada repositorio.",
+    "tarea5": "Creación de prueba de integración para validar el flujo completo (Cliente → Contratación → Sesión → Interacción → Adjunto)."
   },
   "posts": [
     "Post 1: Definición del proyecto",
     "Post 2: Diseño de la arquitectura y modelo de datos",
-    "Post 3: Inicio de la implementación (este post)"
+    "Post 3: Inicio de la implementación (este post)",
+    "Post 4: Implementación de la capa de datos"
   ]
 }
-

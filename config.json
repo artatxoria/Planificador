@@ -23,5 +23,12 @@
     "puerto": 587,
     "usuario": "",
     "password": ""
+  },
+  "registro": {
+    "archivo": "logs/planificador.log",
+    "nivel": "INFO",
+    "max_bytes": 1048576,
+    "copias": 3
   }
 }
+

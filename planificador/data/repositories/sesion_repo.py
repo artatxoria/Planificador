@@ -38,3 +38,20 @@ class SesionRepository:
         with get_connection() as conn:
             conn.execute("DELETE FROM Sesion WHERE id_sesion=?", (id_sesion,))
             conn.commit()
+
+    @staticmethod
+    def listar_por_fecha(fecha):
+        from planificador.data.db_manager import get_connection
+        with get_connection() as conn:
+            return conn.execute(
+                "SELECT * FROM Sesion WHERE fecha=? ORDER BY hora_inicio", (fecha,)
+            ).fetchall()
+        
+    @staticmethod
+    def listar_por_contratacion(id_contratacion):
+        from planificador.data.db_manager import get_connection
+        with get_connection() as conn:
+            return conn.execute(
+                "SELECT * FROM Sesion WHERE id_contratacion=? ORDER BY fecha, hora_inicio",
+                (id_contratacion,)
+            ).fetchall()
