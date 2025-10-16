@@ -10,7 +10,8 @@
     "Sincronizar con Google Calendar",
     "Cálculo de horas impartidas para estadísticas y facturación futura",
     "Registrar y seguir interacciones comerciales con clientes (mini-CRM)",
-    "Crear recordatorios y próximas acciones desde interacciones"
+    "Crear recordatorios y próximas acciones desde interacciones",
+    "Integrar calendario, sesiones e interacciones con automatismos, avisos y recordatorios visuales"
   ],
   "modelo_datos": {
     "Cliente": [
@@ -67,7 +68,7 @@
       "hora_fin",
       "direccion",
       "enlace_vc",
-      "estado",
+      "estado (programada|reprogramada|cancelada|propuesta)",
       "notas"
     ],
     "Adjunto": [
@@ -91,13 +92,23 @@
       "fecha_proxima_accion",
       "crear_recordatorio (bool)",
       "created_at"
+    ],
+    "Recordatorio": [
+      "id_recordatorio",
+      "tipo (interaccion|sesion|otro)",
+      "id_origen",
+      "cliente",
+      "fecha",
+      "descripcion",
+      "estado (pendiente|completado)",
+      "created_at"
     ]
   },
   "arquitectura": {
     "capa_datos": "SQLite + repositorios",
-    "capa_dominio": "Clases OOP con lógica de negocio y validaciones",
-    "capa_servicios": "Exportaciones, sincronización, backups, seguimiento comercial",
-    "capa_ui": "PyQt6 modular: ventanas, vistas y formularios con integración total con datos"
+    "capa_dominio": "Clases OOP con lógica de negocio",
+    "capa_servicios": "Exportaciones, sincronización, backups, recordatorios automáticos y seguimiento comercial",
+    "capa_ui": "PyQt con vistas de calendario, clientes, interacciones, recordatorios y configuración"
   },
   "roadmap": {
     "fase1": ["estructura proyecto", "entorno", "configuración", "git"],
@@ -106,21 +117,15 @@
     "fase4": ["servicios exportación", "csv", "ical", "google calendar", "backups"],
     "fase5": ["UI principal", "vistas calendario", "formularios", "drag&drop", "búsqueda"],
     "fase6": ["adjuntos", "mejoras UI", "exportar PDF", "config avanzada"],
-    "fase7": [
-      "integración PyQt completa (Clientes, Calendario, Formaciones, Interacciones, Configuración)",
-      "vistas conectadas a la base de datos",
-      "mensajes y logs integrados",
-      "repositorios funcionales en tiempo real",
-      "estructura modular lista para añadir formularios y drag&drop"
-    ],
+    "fase7": ["tests unitarios", "tests funcionales", "docstring", "ejecutable", "publicar github"],
     "fase8": [
-      "formularios de alta/edición en vistas",
-      "drag&drop en calendario",
-      "vistas semanal y diaria",
-      "recordatorios automáticos",
-      "filtros avanzados y estados visuales",
-      "exportación de planning a PDF",
-      "publicación final del proyecto en GitHub"
+      "integración visual del calendario con sesiones (sincronización automática)",
+      "formularios modales para crear/editar sesiones e interacciones",
+      "vinculación de interacciones con sesiones o contrataciones",
+      "notificaciones locales (recordatorios automáticos y avisos de margen insuficiente)",
+      "registro automático de interacciones según eventos del calendario",
+      "refinamiento de la experiencia de usuario (UX)",
+      "creación e integración de vista de recordatorios en la interfaz principal"
     ]
   },
   "posts": [
@@ -128,8 +133,9 @@
     "Post 2: Diseño de la arquitectura y modelo de datos",
     "Post 3: Inicio de la implementación",
     "Post 4: Implementación de la capa de datos",
-    "Post 5: Implementación de la capa de dominio",
-    "Post 6: Servicios: exportación, sincronización y backups",
-    "Post 7: Interfaz gráfica con PyQt6 (estructura y vistas funcionales)"
+    "Post 5: Capa de dominio y lógica de negocio",
+    "Post 6: Servicios de exportación, sincronización y backups",
+    "Post 7: Interfaz gráfica inicial con PyQt",
+    "Post 8: Integración calendario-interacciones y automatismos"
   ]
 }

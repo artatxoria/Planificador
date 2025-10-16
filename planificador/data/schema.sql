@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Sesion (
   hora_fin TEXT NOT NULL,     -- HH:MM
   direccion TEXT,
   enlace_vc TEXT,
-  estado TEXT NOT NULL DEFAULT 'programada' CHECK (estado IN ('programada','reprogramada','cancelada')),
+  estado TEXT NOT NULL DEFAULT 'propuesta' CHECK (estado IN ('propuesta','programada','reprogramada','cancelada')),
   notas TEXT,
   FOREIGN KEY (id_contratacion) REFERENCES ContratacionClienteFormacion(id_contratacion)
     ON UPDATE CASCADE ON DELETE CASCADE,

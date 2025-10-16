@@ -3,14 +3,20 @@ from planificador.data.db_manager import get_connection
 class SesionRepository:
 
     @staticmethod
-    def crear(id_contratacion, fecha, hora_inicio, hora_fin,
-              direccion=None, enlace_vc=None, estado="programada", notas=None):
+    @staticmethod
+    def crear(id_contratacion, fecha=None, hora_inicio=None, hora_fin=None,
+            direccion=None, enlace_vc=None, estado="propuesta", notas=None):
+        """
+        Crea una nueva sesión. Permite registrar propuestas sin fecha ni hora aún definidas.
+        """
         with get_connection() as conn:
             cur = conn.execute("""
-                INSERT INTO Sesion (id_contratacion, fecha, hora_inicio, hora_fin, direccion, enlace_vc, estado, notas)
+                INSERT INTO Sesion (id_contratacion, fecha, hora_inicio, hora_fin,
+                                    direccion, enlace_vc, estado, notas)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (id_contratacion, fecha, hora_inicio, hora_fin, direccion, enlace_vc, estado, notas))
             conn.commit()
+            logger.info(f"Sesión creada: estado={estado}, contratación={id_contratacion}, fecha={fecha or 'sin definir'}")
             return cur.lastrowid
 
     @staticmethod
@@ -55,3 +61,18 @@ class SesionRepository:
                 "SELECT * FROM Sesion WHERE id_contratacion=? ORDER BY fecha, hora_inicio",
                 (id_contratacion,)
             ).fetchall()
+
+    @staticmethod
+    def listar_todas():
+        """
+        Devuelve todas las sesiones registradas en la base de datos.
+        """
+        with get_connection() as conn:
+            cur = conn.execute("""
+                SELECT id_sesion, id_contratacion, fecha, hora_inicio, hora_fin,
+                    direccion, enlace_vc, estado, notas
+                FROM Sesion
+                ORDER BY fecha ASC, hora_inicio ASC
+            """)
+            columnas = [c[0] for c in cur.description]
+            return [dict(zip(columnas, fila)) for fila in cur.fetchall()]
