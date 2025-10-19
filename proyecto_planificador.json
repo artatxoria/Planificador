@@ -1,0 +1,306 @@
+{
+  "proyecto": "Agenda visual de formaciones",
+  "usuario": "Formador único",
+  "estado_actual": "Todo completado hasta la fase 8. Se inicia la fase 9 con la ampliación del modelo de cliente y gestión de cliente final.",
+  "objetivos": [
+    "Visualizar calendario en vistas anual, mensual, semanal y diaria",
+    "Planificar formaciones vinculadas a clientes y sesiones",
+    "Controlar solapamientos y márgenes de desplazamiento",
+    "Gestionar eventos recurrentes",
+    "Exportar planning a PDF",
+    "Sincronizar con Google Calendar",
+    "Cálculo de horas impartidas para estadísticas y facturación futura",
+    "Registrar y seguir interacciones comerciales con clientes (mini-CRM)",
+    "Crear recordatorios automáticos y próximas acciones desde interacciones",
+    "Integrar calendario, sesiones e interacciones con automatismos, avisos y recordatorios visuales",
+    "Incorporar flujo de facturación automatizado para clientes y formaciones",
+    "Optimizar experiencia de usuario y visualización avanzada (UX/UI mejorada)"
+  ],
+  "modelo_datos": {
+    "Cliente": [
+      "id_cliente",
+      "empresa",
+      "persona_contacto",
+      "telefono",
+      "email",
+      "direccion",
+      "cif",
+      "notas",
+      "color_hex",
+      "id_comercial",
+      "id_gestor"
+    ],
+    "ClienteFinal": [
+      "id_cliente_final",
+      "empresa",
+      "persona_encargada",
+      "telefono_encargada",
+      "email_encargada",
+      "direccion",
+      "notas"
+    ],
+    "ContactoClienteFinal": [
+      "id_contacto_final",
+      "id_cliente_final",
+      "nombre",
+      "telefono",
+      "email",
+      "rol (encargado_formacion|participante|otro)",
+      "notas"
+    ],
+    "Participante": [
+      "id_participante",
+      "id_cliente_final",
+      "nombre",
+      "email",
+      "telefono",
+      "observaciones"
+    ],
+    "FormacionBase": [
+      "id_formacion_base",
+      "nombre (hasta 4 líneas de texto)",
+      "descripcion",
+      "id_tema",
+      "horas_referencia",
+      "nivel",
+      "contenido_base"
+    ],
+    "Tema": [
+      "id_tema",
+      "nombre",
+      "descripcion"
+    ],
+    "ContratacionClienteFormacion": [
+      "id_contratacion",
+      "id_cliente",
+      "id_cliente_final (opcional)",
+      "id_formacion_base",
+      "expediente",
+      "precio_hora",
+      "horas_previstas",
+      "modalidad",
+      "direccion",
+      "enlace_vc",
+      "persona_responsable",
+      "telefono_responsable",
+      "email_responsable",
+      "fecha_inicio_prevista",
+      "fecha_fin_prevista",
+      "observaciones",
+      "estado",
+      "prioridad",
+      "created_at",
+      "updated_at"
+    ],
+    "Sesion": [
+      "id_sesion",
+      "id_contratacion",
+      "fecha",
+      "hora_inicio",
+      "hora_fin",
+      "direccion",
+      "enlace_vc",
+      "estado (programada|reprogramada|cancelada|propuesta)",
+      "notas"
+    ],
+    "Adjunto": [
+      "id_adjunto",
+      "origen",
+      "id_origen",
+      "tipo",
+      "ruta_fichero",
+      "notas",
+      "created_at"
+    ],
+    "InteraccionCliente": [
+      "id_interaccion",
+      "id_cliente",
+      "id_contratacion (opcional)",
+      "fecha",
+      "tipo (llamada|email|reunion|mensaje|otro)",
+      "descripcion",
+      "resultado (pendiente|negociacion|aceptado|rechazado|sin_respuesta)",
+      "proxima_accion",
+      "fecha_proxima_accion",
+      "crear_recordatorio (bool)",
+      "created_at"
+    ],
+    "Recordatorio": [
+      "id_recordatorio",
+      "tipo (interaccion|sesion|otro)",
+      "id_origen",
+      "cliente",
+      "fecha",
+      "descripcion",
+      "estado (pendiente|completado)",
+      "created_at"
+    ],
+    "Factura": [
+      "id_factura",
+      "id_cliente",
+      "numero_factura",
+      "fecha_emision",
+      "fecha_vencimiento",
+      "concepto",
+      "importe_bruto",
+      "iva",
+      "importe_total",
+      "estado (borrador|emitida|cobrada|cancelada)",
+      "ruta_pdf",
+      "created_at"
+    ],
+    "UsuarioSistema": [
+      "id_usuario",
+      "nombre",
+      "rol (formador|comercial|gestor|admin)",
+      "email",
+      "telefono",
+      "idioma_preferido"
+    ]
+  },
+  "arquitectura": {
+    "capa_datos": "SQLite + repositorios",
+    "capa_dominio": "Clases OOP con validaciones y lógica de negocio",
+    "capa_servicios": "Exportaciones, sincronización, backups, recordatorios automáticos, facturación y seguimiento comercial",
+    "capa_ui": "PyQt con vistas modulares: calendario, clientes, interacciones, recordatorios, facturación y configuración"
+  },
+  "roadmap": {
+    "fase1": [
+      "estructura del proyecto",
+      "entorno virtual",
+      "configuración base",
+      "control de versiones"
+    ],
+    "fase2": [
+      "script SQL",
+      "db_manager",
+      "repositorios CRUD",
+      "consultas clave"
+    ],
+    "fase3": [
+      "clases de dominio",
+      "validación de datos",
+      "registro de actividad (logging)"
+    ],
+    "fase4": [
+      "servicios de exportación, CSV, iCal, sincronización Google Calendar, backups"
+    ],
+    "fase5": [
+      "UI principal con PyQt",
+      "vistas calendario",
+      "formularios y drag&drop",
+      "búsqueda avanzada"
+    ],
+    "fase6": [
+      "gestión de adjuntos",
+      "mejoras de interfaz",
+      "exportación PDF",
+      "configuración avanzada"
+    ],
+    "fase7": [
+      "tests unitarios y funcionales",
+      "documentación interna",
+      "generación de ejecutable",
+      "publicación en GitHub"
+    ],
+    "fase8": [
+      "integración visual del calendario con sesiones e interacciones",
+      "formularios modales para sesiones e interacciones",
+      "recordatorios automáticos y avisos locales",
+      "registro automático de interacciones según eventos",
+      "UX refinada e integración de vista de Recordatorios"
+    ],
+    "fase9": [
+      "ampliar modelo de cliente (comercial y gestor asignados)",
+      "añadir entidad ClienteFinal y ContactoClienteFinal",
+      "registrar participantes de formaciones (si existen)",
+      "ajustar vistas de cliente e interacciones",
+      "optimizar flujo de comunicación comercial y seguimiento",
+      "actualizar formularios y vistas de contrataciones para incluir id_cliente_final",
+      "preparar reportes y listados con nuevos campos (contacto responsable en cliente final, listado de participantes)"
+    ],
+    "fase10": [
+      "módulo completo de facturación",
+      "generación automática de facturas desde contrataciones y sesiones",
+      "exportación PDF de facturas y control de pagos",
+      "vista de facturación integrada en la interfaz"
+    ],
+    "fase11": [
+      "sincronización avanzada con Google Calendar y servicios externos",
+      "notificaciones push y avisos en escritorio",
+      "integración de correo electrónico para envío de recordatorios"
+    ],
+    "fase12": [
+      "dashboard analítico con métricas: horas impartidas, ingresos, clientes activos",
+      "filtros dinámicos y gráficos interactivos (PyQtCharts)"
+    ],
+    "fase13": [
+      "roles de usuario (formador, gestor, comercial, admin)",
+      "personalización de vistas y permisos",
+      "configuración multilingüe e internacionalización"
+    ],
+    "fase14": [
+      "asistente inteligente predictivo (IA local)",
+      "sugerencias de planificación y detección de conflictos",
+      "recomendaciones de facturación y seguimiento comercial automatizado"
+    ]
+  },
+  "posts": [
+    "Post 1: Definición del proyecto",
+    "Post 2: Diseño de la arquitectura y modelo de datos",
+    "Post 3: Inicio de la implementación",
+    "Post 4: Implementación de la capa de datos",
+    "Post 5: Capa de dominio y lógica de negocio",
+    "Post 6: Servicios de exportación, sincronización y backups",
+    "Post 7: Interfaz gráfica inicial con PyQt",
+    "Post 8: Integración calendario-interacciones y automatismos",
+    "Post 9: Extensión del modelo de clientes y flujo comercial",
+    "Post 10: Implementación del módulo de facturación automatizada",
+    "Post 11: Sincronización avanzada y notificaciones externas",
+    "Post 12: Dashboard analítico y métricas de productividad",
+    "Post 13: Roles de usuario y personalización",
+    "Post 14: Asistente inteligente y planificación predictiva"
+  ],
+  "plantillas_publicacion": {
+    "post_castellano": {
+      "estructura": [
+        "Cabecera YAML con metadatos (title, description, pubDate, lang, summary, author, tags, tkey)",
+        "Título principal con encabezado H1",
+        "Introducción al contexto y objetivos de la fase",
+        "Bloques seccionados con H2: componentes, servicios, vistas, integración",
+        "Código real en bloques ```python```",
+        "Conclusión con lista de funcionalidades completadas",
+        "Próximos pasos y reflexión"
+      ],
+      "tono": "técnico y divulgativo, estilo profesional",
+      "extensión": "1000-1500 palabras",
+      "formato": "Markdown (.md)"
+    },
+    "post_euskera": {
+      "estructura": [
+        "Goiburuko YAML datuekin (title, description, pubDate, lang, summary, author, tags, tkey)",
+        "H1 titulua eta sarrera",
+        "Atal teknikoak eta azalpenak (zer egin den fase honetan, kodea, emaitzak)",
+        "Kode errealaren zatiak ```python``` blokeetan",
+        "Amaierako ondorioak eta hurrengo urratsak"
+      ],
+      "tono": "teknikoa eta argia, estilo naturala eta komunikatiboa",
+      "extensión": "media-larga",
+      "formato": "Markdown (.md)"
+    },
+    "post_linkedin": {
+      "estructura": [
+        "Título breve con emoji y nombre del proyecto",
+        "Versión en euskera (primer bloque, 4-6 líneas + emojis y hashtags)",
+        "Separador (behean euskaraz / abajo en euskera)",
+        "Versión en castellano (bloque equivalente)",
+        "Lista de logros con emojis y viñetas",
+        "Conclusión motivadora sobre el avance",
+        "Hashtags técnicos y de productividad"
+      ],
+      "tono": "divulgativo profesional y cercano",
+      "extensión": "150-250 palabras",
+      "orden": "Primero euskera, después castellano"
+    }
+  }
+}

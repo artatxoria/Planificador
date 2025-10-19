@@ -1,3 +1,5 @@
+# planificador/ui/main_window.py
+
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QListWidget,
     QStackedWidget, QHBoxLayout, QMenuBar, QStatusBar, QMessageBox
@@ -6,13 +8,19 @@ from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 import sys
 
-# Importar todas las vistas existentes
+# --- Importar todas las vistas existentes ---
 from planificador.ui.vistas.vista_clientes import VistaClientes
 from planificador.ui.vistas.vista_calendario import VistaCalendario
 from planificador.ui.vistas.vista_formaciones import VistaFormaciones
 from planificador.ui.vistas.vista_interacciones import VistaInteracciones
 from planificador.ui.vistas.vista_configuracion import VistaConfiguracion
-from planificador.ui.vistas.vista_recordatorios import VistaRecordatorios  # ✅ NUEVA
+from planificador.ui.vistas.vista_recordatorios import VistaRecordatorios
+
+# --- Importar las nuevas vistas de fase 9 ---
+from planificador.ui.vistas.vista_clientes_finales import VistaClientesFinales
+from planificador.ui.vistas.vista_contactos_clientes_finales import VistaContactosClientesFinales
+from planificador.ui.vistas.vista_participantes import VistaParticipantes
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -30,23 +38,29 @@ class MainWindow(QMainWindow):
         self.menu_lateral = QListWidget()
         self.menu_lateral.addItems([
             "Clientes",
+            "Clientes Finales",                # ✅ Nueva vista
+            "Contactos Clientes Finales",      # ✅ Nueva vista
+            "Participantes",                   # ✅ Nueva vista
             "Calendario",
             "Formaciones",
             "Interacciones",
-            "Recordatorios",   # ✅ Nuevo apartado
+            "Recordatorios",
             "Configuración",
         ])
-        self.menu_lateral.setMaximumWidth(220)
+        self.menu_lateral.setMaximumWidth(240)
         self.menu_lateral.currentRowChanged.connect(self._cambiar_vista)
 
-        # --- Vistas ---
+        # --- Vistas (orden igual que el menú) ---
         self.vistas = QStackedWidget()
-        self.vistas.addWidget(VistaClientes())
-        self.vistas.addWidget(VistaCalendario())
-        self.vistas.addWidget(VistaFormaciones())
-        self.vistas.addWidget(VistaInteracciones())
-        self.vistas.addWidget(VistaRecordatorios())  # ✅ Nueva vista insertada
-        self.vistas.addWidget(VistaConfiguracion())
+        self.vistas.addWidget(VistaClientes())                    # 0
+        self.vistas.addWidget(VistaClientesFinales())             # 1
+        self.vistas.addWidget(VistaContactosClientesFinales())    # 2
+        self.vistas.addWidget(VistaParticipantes())               # 3
+        self.vistas.addWidget(VistaCalendario())                  # 4
+        self.vistas.addWidget(VistaFormaciones())                 # 5
+        self.vistas.addWidget(VistaInteracciones())               # 6
+        self.vistas.addWidget(VistaRecordatorios())               # 7
+        self.vistas.addWidget(VistaConfiguracion())               # 8
 
         layout.addWidget(self.menu_lateral)
         layout.addWidget(self.vistas, 1)
@@ -87,7 +101,7 @@ class MainWindow(QMainWindow):
             "Acerca de",
             "Planificador de Formaciones\n"
             "Desarrollado por Juan Carlos Beaskoetxea\n"
-            "© 2025 — con integración de Recordatorios"
+            "© 2025 — con gestión extendida de Clientes Finales y Participantes"
         )
 
 

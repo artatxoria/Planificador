@@ -8,7 +8,8 @@ log = get_logger(__name__)
 class Contratacion:
     """
     Clase de dominio que representa la contratación de una formación por parte de un cliente.
-    Incluye validación, lógica de negocio y registro de actividad.
+    Puede incluir un cliente final (empresa donde se imparte la formación) cuando el contrato
+    proviene de una agencia intermediaria.
     """
 
     def __init__(self, id_cliente, id_formacion_base, expediente,
@@ -17,9 +18,12 @@ class Contratacion:
                  persona_responsable=None, telefono_responsable=None, email_responsable=None,
                  fecha_inicio_prevista=None, fecha_fin_prevista=None,
                  observaciones=None, estado="tentativo", prioridad="media",
+                 id_cliente_final=None, cliente_final=None,
                  id_contratacion=None, created_at=None, updated_at=None):
         self.id_contratacion = id_contratacion
         self.id_cliente = id_cliente
+        self.id_cliente_final = id_cliente_final        # Nuevo campo (fase 9)
+        self.cliente_final = cliente_final              # Campo informativo (no persistente)
         self.id_formacion_base = id_formacion_base
         self.expediente = expediente
         self.precio_hora = precio_hora
@@ -39,12 +43,17 @@ class Contratacion:
         self.updated_at = updated_at or datetime.now().isoformat()
 
         self._validar()
-        log.info(f"Contratación creada: expediente={self.expediente}, cliente={self.id_cliente}, formacion={self.id_formacion_base}, id={self.id_contratacion or 'pendiente'}")
+        log.info(
+            f"Contratación creada: expediente={self.expediente}, cliente={self.id_cliente}, "
+            f"formacion={self.id_formacion_base}, cliente_final={self.id_cliente_final or 'N/A'}, "
+            f"id={self.id_contratacion or 'pendiente'}"
+        )
 
     def _validar(self):
+        """Valida la coherencia básica de los datos de contratación."""
         if not self.id_cliente:
             log.error("Error al crear Contratacion: falta 'id_cliente'")
-            raise ValueError("La contratación debe estar vinculada a un cliente")
+            raise ValueError("La contratación debe estar vinculada a un cliente principal")
         if not self.id_formacion_base:
             log.error("Error al crear Contratacion: falta 'id_formacion_base'")
             raise ValueError("La contratación debe estar vinculada a una formación base")
@@ -54,6 +63,11 @@ class Contratacion:
         if self.precio_hora is not None and self.precio_hora <= 0:
             log.error(f"Precio/hora inválido en Contratacion {self.expediente}: {self.precio_hora}")
             raise ValueError("El precio/hora debe ser mayor que 0")
+
+        # Validación ligera para coherencia de cliente_final
+        if self.id_cliente_final is not None and not isinstance(self.id_cliente_final, int):
+            log.error(f"id_cliente_final inválido ({self.id_cliente_final}) en {self.expediente}")
+            raise ValueError("El id_cliente_final debe ser un entero o None")
 
     # -------------------
     # Lógica de negocio
@@ -91,7 +105,8 @@ class Contratacion:
         return honorarios
 
     def __repr__(self):
-        return f"<Contratacion {self.expediente} Cliente {self.id_cliente}>"
+        return f"<Contratacion {self.expediente} Cliente {self.id_cliente}" + \
+               (f" ClienteFinal {self.id_cliente_final}>" if self.id_cliente_final else ">")
 
     def to_dict(self):
         data = self.__dict__.copy()

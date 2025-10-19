@@ -26,9 +26,7 @@ class ServicioRecordatorios:
             if (
                 inter["crear_recordatorio"]
                 and inter["fecha_proxima_accion"]
-                and datetime.strptime(inter["fecha_proxima_accion"], "%Y-%m-%d")
-                >= datetime.now()
-            ):
+                and datetime.strptime(inter["fecha_proxima_accion"], "%Y-%m-%d").date() >= datetime.now().date()):
                 recordatorio = {
                     "tipo": inter["tipo"],
                     "cliente": inter["id_cliente"],

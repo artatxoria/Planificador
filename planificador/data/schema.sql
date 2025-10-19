@@ -18,6 +18,48 @@ CREATE TABLE IF NOT EXISTS Cliente (
 );
 
 -- =========================================
+-- Tabla: ClienteFinal (empresa donde se imparte la formación)
+-- =========================================
+CREATE TABLE IF NOT EXISTS ClienteFinal (
+  id_cliente_final INTEGER PRIMARY KEY AUTOINCREMENT,
+  empresa TEXT NOT NULL,
+  persona_encargada TEXT,
+  telefono_encargada TEXT,
+  email_encargada TEXT,
+  direccion TEXT,
+  notas TEXT
+);
+
+-- =========================================
+-- Tabla: ContactoClienteFinal (contactos asociados al cliente final)
+-- =========================================
+CREATE TABLE IF NOT EXISTS ContactoClienteFinal (
+  id_contacto_final INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_cliente_final INTEGER NOT NULL,
+  nombre TEXT NOT NULL,
+  telefono TEXT,
+  email TEXT,
+  rol TEXT CHECK (rol IN ('encargado_formacion','participante','otro')) DEFAULT 'encargado_formacion',
+  notas TEXT,
+  FOREIGN KEY (id_cliente_final) REFERENCES ClienteFinal(id_cliente_final)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- =========================================
+-- Tabla: Participante (listado de asistentes si se dispone)
+-- =========================================
+CREATE TABLE IF NOT EXISTS Participante (
+  id_participante INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_cliente_final INTEGER NOT NULL,
+  nombre TEXT NOT NULL,
+  email TEXT,
+  telefono TEXT,
+  observaciones TEXT,
+  FOREIGN KEY (id_cliente_final) REFERENCES ClienteFinal(id_cliente_final)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- =========================================
 -- Tabla: Tema (catálogo)
 -- =========================================
 CREATE TABLE IF NOT EXISTS Tema (
@@ -48,6 +90,7 @@ CREATE TABLE IF NOT EXISTS FormacionBase (
 CREATE TABLE IF NOT EXISTS ContratacionClienteFormacion (
   id_contratacion INTEGER PRIMARY KEY AUTOINCREMENT,
   id_cliente INTEGER NOT NULL,
+  id_cliente_final INTEGER NULL,                  -- añadido en fase 9
   id_formacion_base INTEGER NOT NULL,
   expediente TEXT NOT NULL,                       -- código único
   precio_hora REAL,
@@ -67,6 +110,8 @@ CREATE TABLE IF NOT EXISTS ContratacionClienteFormacion (
   updated_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP),
   FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
     ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (id_cliente_final) REFERENCES ClienteFinal(id_cliente_final)
+    ON UPDATE CASCADE ON DELETE SET NULL,
   FOREIGN KEY (id_formacion_base) REFERENCES FormacionBase(id_formacion_base)
     ON UPDATE CASCADE ON DELETE RESTRICT,
   UNIQUE (expediente)
@@ -126,7 +171,7 @@ CREATE TABLE IF NOT EXISTS InteraccionCliente (
   fecha TEXT NOT NULL,              -- YYYY-MM-DD
   tipo TEXT NOT NULL CHECK (tipo IN ('llamada','email','reunion','mensaje','otro')),
   descripcion TEXT,
-  resultado TEXT NOT NULL DEFAULT 'pendiente' CHECK (resultado IN ('pendiente','negociacion','aceptado','rechazado','sin_respuesta')),
+  resultado TEXT NOT NULL DEFAULT 'pendiente' CHECK (resultado IN ('propuesta','pendiente','negociacion','aceptado','rechazado','sin_respuesta')),
   proxima_accion TEXT,
   fecha_proxima_accion TEXT,        -- YYYY-MM-DD
   crear_recordatorio INTEGER NOT NULL DEFAULT 0 CHECK (crear_recordatorio IN (0,1)),
@@ -141,7 +186,11 @@ CREATE TABLE IF NOT EXISTS InteraccionCliente (
 -- Índices recomendados
 -- =========================================
 CREATE INDEX IF NOT EXISTS idx_cliente_cif ON Cliente(cif);
+CREATE INDEX IF NOT EXISTS idx_cliente_final_empresa ON ClienteFinal(empresa);
+CREATE INDEX IF NOT EXISTS idx_contacto_final_cliente ON ContactoClienteFinal(id_cliente_final);
+CREATE INDEX IF NOT EXISTS idx_participante_cliente_final ON Participante(id_cliente_final);
 CREATE INDEX IF NOT EXISTS idx_contratacion_cliente ON ContratacionClienteFormacion(id_cliente);
+CREATE INDEX IF NOT EXISTS idx_contratacion_cliente_final ON ContratacionClienteFormacion(id_cliente_final);
 CREATE INDEX IF NOT EXISTS idx_contratacion_formacion ON ContratacionClienteFormacion(id_formacion_base);
 CREATE INDEX IF NOT EXISTS idx_sesion_contratacion_fecha ON Sesion(id_contratacion, fecha, hora_inicio);
 CREATE INDEX IF NOT EXISTS idx_interaccion_cliente_fecha ON InteraccionCliente(id_cliente, fecha);
